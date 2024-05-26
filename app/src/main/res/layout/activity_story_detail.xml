@@ -7,6 +7,7 @@
     tools:context=".view.main.storyDetail.StoryDetailActivity">
 
     <ImageView
+        android:contentDescription="@string/story_image"
         android:id="@+id/img_story_detail"
         android:layout_width="0dp"
         android:layout_height="250dp"
