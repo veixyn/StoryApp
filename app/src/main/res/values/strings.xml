@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="welcome_title">Dicoding Stories</string>
+    <string name="welcome_description">Mau berbagi ilmu tentang Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicoding Stories aja!</string>
+    <string name="login">Login</string>
+    <string name="register">Don\'t have an account? Register</string>
+    <string name="login_title">Sudah siap untuk bercerita?</string>
+    <string name="login_description">Masukkan data dirimu disini</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register_title">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="name">Nama</string>
+    <string name="signup">Daftar</string>
+    <string name="logout">Logout</string>
+    <string name="title">Story Title</string>
+    <string name="description">Story Description</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload_hint">Set a description for your story here</string>
+    <string name="upload">Upload</string>
+    <string name="add_story">Add Story</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="menu_1">Logout</string>
+    <string name="created_at">Created At</string>
+    <string name="nama_uploader">Nama Uploader</string>
+    <string name="description_body">Story Description Body</string>
+</resources>
