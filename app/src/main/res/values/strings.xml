@@ -26,4 +26,6 @@
     <string name="description_body">Story Description Body</string>
     <string name="password_error">Password tidak boleh kurang dari 8 karakter</string>
     <string name="story_image">Story Image</string>
+    <string name="show_maps">Show Maps</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.MapsActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityMainBinding
@@ -34,7 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.menu1 -> {
+                R.id.maps -> {
+                    startActivity(Intent(this, MapsActivity::class.java))
+                    true
+                }
+                R.id.logout -> {
                     AlertDialog.Builder(this@MainActivity).apply {
                         setTitle("Log out?")
                         setMessage("Apakah anda yakin untuk log out?")
