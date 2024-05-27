@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.storyapp.data.UserRepository
+import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.api.ApiConfig
 import com.dicoding.storyapp.data.api.LoginResponse
 import com.dicoding.storyapp.data.pref.UserModel
@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class LoginViewModel(private val repository: UserRepository) : ViewModel() {
+class LoginViewModel(private val repository: Repository) : ViewModel() {
     fun saveSession(user: UserModel) {
         viewModelScope.launch {
             repository.saveSession(user)

@@ -3,7 +3,7 @@ package com.dicoding.storyapp.view.main.addStory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.storyapp.data.UserRepository
+import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.api.ApiConfig
 import com.dicoding.storyapp.data.api.StoryUploadResponse
 import com.google.gson.Gson
@@ -14,7 +14,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-class UploadViewModel(private val repository: UserRepository) : ViewModel() {
+class UploadViewModel(private val repository: Repository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading

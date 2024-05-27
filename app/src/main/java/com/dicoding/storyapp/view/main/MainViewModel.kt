@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.dicoding.storyapp.data.UserRepository
+import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.api.ApiConfig
 import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.data.api.StoryResponse
@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel(private val repository: UserRepository) : ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
     }
@@ -41,6 +41,7 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _story.value = response.body()?.listStory
+                        println("ini MainViewModel")
                     }
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")

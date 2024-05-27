@@ -3,14 +3,15 @@ package com.dicoding.storyapp.view
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.storyapp.data.UserRepository
+import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.di.Injection
 import com.dicoding.storyapp.view.login.LoginViewModel
 import com.dicoding.storyapp.view.main.MainViewModel
 import com.dicoding.storyapp.view.main.addStory.UploadViewModel
+import com.dicoding.storyapp.view.maps.MapsViewModel
 import com.dicoding.storyapp.view.register.RegisterViewModel
 
-class ViewModelFactory(private val repository: UserRepository) :
+class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -30,6 +31,10 @@ class ViewModelFactory(private val repository: UserRepository) :
 
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

@@ -3,13 +3,13 @@ package com.dicoding.storyapp.view.register
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.storyapp.data.UserRepository
+import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.api.ApiConfig
 import com.dicoding.storyapp.data.api.RegisterResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 
-class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
+class RegisterViewModel(private val repository: Repository) : ViewModel() {
     private var _isLoading = MutableLiveData<Boolean>()
     var isLoading: LiveData<Boolean> = _isLoading
 

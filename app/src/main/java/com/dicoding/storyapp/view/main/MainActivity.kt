@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.MapsActivity
+import com.dicoding.storyapp.view.maps.MapsActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityMainBinding
