@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    private lateinit var token: String
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,12 +66,7 @@ class MainActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             } else {
-                token = user.token
-                viewModel.getStory(token)
-
-                viewModel.story.observe(this) { stories ->
-                    setStories(stories)
-                }
+                setStories()
             }
         }
 
@@ -83,9 +76,11 @@ class MainActivity : AppCompatActivity() {
         binding.rvStories.addItemDecoration(itemDecoration)
     }
 
-    fun setStories(items: List<ListStoryItem>) {
-        val adapter = StoryAdapter(items)
-        adapter.submitList(items)
+    fun setStories() {
+        val adapter = StoryAdapter()
         binding.rvStories.adapter = adapter
+        viewModel.story.observe(this) {
+            adapter.submitData(lifecycle, it)
+        }
     }
 }

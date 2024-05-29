@@ -67,5 +67,5 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.7.2")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
-
+    implementation("androidx.paging:paging-runtime:3.1.0")
 }

@@ -3,6 +3,7 @@ package com.dicoding.storyapp.view.main
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +13,8 @@ import com.dicoding.storyapp.databinding.ItemRvStoriesBinding
 import com.dicoding.storyapp.view.main.storyDetail.StoryDetailActivity
 import com.dicoding.storyapp.view.main.storyDetail.StoryDetailActivity.Companion.EXTRA_STORY
 
-class StoryAdapter(private val listStory: List<ListStoryItem>) :
-    ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter :
+    PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     class MyViewHolder(val binding: ItemRvStoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStoryItem) {
             Glide.with(binding.root)
@@ -26,21 +27,21 @@ class StoryAdapter(private val listStory: List<ListStoryItem>) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding =
-            ItemRvStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val story = getItem(position)
-        holder.bind(story)
-        holder.itemView.setOnClickListener {
-            val intentDetail = Intent(holder.itemView.context, StoryDetailActivity::class.java)
-            intentDetail.putExtra(EXTRA_STORY, listStory[holder.adapterPosition])
-            holder.itemView.context.startActivity(intentDetail)
-        }
-    }
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+//        val binding =
+//            ItemRvStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+//        return MyViewHolder(binding)
+//    }
+//
+//    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+//        val story = getItem(position)
+//        holder.bind(story)
+//        holder.itemView.setOnClickListener {
+//            val intentDetail = Intent(holder.itemView.context, StoryDetailActivity::class.java)
+//            intentDetail.putExtra(EXTRA_STORY, listStory[holder.adapterPosition])
+//            holder.itemView.context.startActivity(intentDetail)
+//        }
+//    }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
@@ -55,5 +56,17 @@ class StoryAdapter(private val listStory: List<ListStoryItem>) :
                 return oldItem == newItem
             }
         }
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val binding = ItemRvStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 }

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dicoding.storyapp.data.Repository
 import com.dicoding.storyapp.data.api.ApiConfig
 import com.dicoding.storyapp.data.api.ListStoryItem
@@ -27,32 +29,32 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    private val _story = MutableLiveData<List<ListStoryItem>>()
-    val story: LiveData<List<ListStoryItem>> = _story
+    val story: LiveData<PagingData<ListStoryItem>> =
+        repository.getStory().cachedIn(viewModelScope)
 
-    fun getStory(token: String) {
-        val client = ApiConfig.getApiService(token).getStories()
-        client.enqueue(object : Callback<StoryResponse> {
-            override fun onResponse(
-                call: Call<StoryResponse>,
-                response: Response<StoryResponse>,
-            ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        _story.value = response.body()?.listStory
-                        println("ini MainViewModel")
-                    }
-                } else {
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
-    }
+//    fun getStory(token: String) {
+//        val client = ApiConfig.getApiService(token).getStories()
+//        client.enqueue(object : Callback<StoryResponse> {
+//            override fun onResponse(
+//                call: Call<StoryResponse>,
+//                response: Response<StoryResponse>,
+//            ) {
+//                if (response.isSuccessful) {
+//                    val responseBody = response.body()
+//                    if (responseBody != null) {
+//                        _story.value = response.body()?.listStory
+//                        println("ini MainViewModel")
+//                    }
+//                } else {
+//                    Log.e(TAG, "onFailure: ${response.message()}")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
+//                Log.e(TAG, "onFailure: ${t.message}")
+//            }
+//        })
+//    }
 
     companion object {
         private const val TAG = "MainViewModel"
