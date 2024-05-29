@@ -6,15 +6,20 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.storyapp.view.maps.MapsActivity
 import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.StoryPagingSource
 import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.view.ViewModelFactory
 import com.dicoding.storyapp.view.main.addStory.UploadActivity
 import com.dicoding.storyapp.view.welcome.WelcomeActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
@@ -71,11 +76,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.refresh.setOnRefreshListener {
-            setStories()
-            binding.refresh.isRefreshing = false
-        }
-
         val layoutManager = LinearLayoutManager(this)
         binding.rvStories.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
@@ -84,7 +84,20 @@ class MainActivity : AppCompatActivity() {
 
     fun setStories() {
         val adapter = StoryAdapter()
-        binding.rvStories.adapter = adapter
+
+        lifecycleScope.launch {
+            delay(1000)
+            adapter.refresh()
+        }
+
+        with(binding) {
+            rvStories.adapter = adapter
+            refresh.setOnRefreshListener {
+                adapter.refresh()
+                refresh.isRefreshing = false
+            }
+        }
+
         viewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
         }

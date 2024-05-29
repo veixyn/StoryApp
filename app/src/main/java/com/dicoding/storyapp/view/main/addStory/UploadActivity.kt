@@ -1,5 +1,8 @@
 package com.dicoding.storyapp.view.main.addStory
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +12,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.storyapp.databinding.ActivityUploadBinding
 import com.dicoding.storyapp.getImageUri
@@ -16,6 +20,8 @@ import com.dicoding.storyapp.reduceFileImage
 import com.dicoding.storyapp.uriToFile
 import com.dicoding.storyapp.view.ViewModelFactory
 import com.dicoding.storyapp.view.main.MainViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 
 class UploadActivity : AppCompatActivity() {
@@ -28,10 +34,14 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityUploadBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var currentImageUri: Uri? = null
+    private var lat: Double? = null
+    private var lon: Double? = null
 
     private lateinit var token: String
+    private lateinit var userLocation: Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +51,10 @@ class UploadActivity : AppCompatActivity() {
         mainViewModel.getSession().observe(this) { user ->
             token = user.token
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        getMyLocation()
 
         binding.btnGallery.setOnClickListener {
             startGallery()
@@ -70,7 +84,7 @@ class UploadActivity : AppCompatActivity() {
                 Log.d("Image File", "showImage: ${imageFile.path}")
                 val description = binding.descriptionEditText.text.toString()
                 lifecycleScope.launch {
-                    viewModel.uploadImage(token, imageFile, description)
+                    viewModel.uploadImage(token, imageFile, description, lat, lon)
                 }
             } ?: run {
                 showToast("Mohon masukkan gambar.")
@@ -103,6 +117,65 @@ class UploadActivity : AppCompatActivity() {
             showImage()
         } else {
             Log.d("Photo Picker", "No media selected")
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    // Precise location access granted.
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    // Only approximate location access granted.
+                }
+                else -> {
+                    // No location access granted.
+                }
+            }
+        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    userLocation = location
+
+                    binding.locationSwitch.setOnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            lat = userLocation.latitude
+                            lon = userLocation.longitude
+                        } else {
+                            lat = null
+                            lon = null
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Location is not found. Try Again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
     }
 
