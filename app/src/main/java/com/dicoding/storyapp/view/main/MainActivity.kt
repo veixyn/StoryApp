@@ -2,6 +2,7 @@ package com.dicoding.storyapp.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 setStories()
             }
+        }
+
+        binding.refresh.setOnRefreshListener {
+            setStories()
+            binding.refresh.isRefreshing = false
         }
 
         val layoutManager = LinearLayoutManager(this)

@@ -62,6 +62,11 @@ class StoryAdapter :
         val data = getItem(position)
         if (data != null) {
             holder.bind(data)
+                holder.itemView.setOnClickListener {
+                val intentDetail = Intent(holder.itemView.context, StoryDetailActivity::class.java)
+                intentDetail.putExtra(EXTRA_STORY, data)
+                holder.itemView.context.startActivity(intentDetail)
+            }
         }
     }
 
