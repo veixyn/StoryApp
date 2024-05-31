@@ -1,6 +1,7 @@
 package com.dicoding.storyapp.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -9,9 +10,11 @@ import com.dicoding.storyapp.data.api.ApiService
 import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.data.pref.UserModel
 import com.dicoding.storyapp.data.pref.UserPreference
+import com.dicoding.storyapp.database.StoryDatabase
 import kotlinx.coroutines.flow.Flow
 
 class Repository private constructor(
+    private val storyDatabase: StoryDatabase,
     private val apiService: ApiService,
     private val userPreference: UserPreference,
 ) {
@@ -29,13 +32,15 @@ class Repository private constructor(
     }
 
     fun getStory(): LiveData<PagingData<ListStoryItem>> {
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
-            pagingSourceFactory = {
-                StoryPagingSource(apiService)
-            }
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService),
+           pagingSourceFactory = {
+               storyDatabase.storyDao().getAllStory()
+           }
         ).liveData
     }
 
@@ -43,11 +48,12 @@ class Repository private constructor(
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
+            storyDatabase: StoryDatabase,
             apiService: ApiService,
             userPreference: UserPreference,
         ): Repository =
             instance ?: synchronized(this) {
-                instance ?: Repository(apiService, userPreference)
+                instance ?: Repository(storyDatabase, apiService, userPreference)
             }.also { instance = it }
     }
 }
