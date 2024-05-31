@@ -47,8 +47,8 @@ class LoginActivity : AppCompatActivity() {
 
                 viewModel.success.observe(this@LoginActivity) {
                     if (it == true) {
-                        viewModel.userModel.observe(this@LoginActivity) {
-                            viewModel.saveSession(it)
+                        viewModel.userModel.observe(this@LoginActivity) { user ->
+                            viewModel.saveSession(user)
                         }
                         AlertDialog.Builder(this@LoginActivity).apply {
                             setTitle("Yeah!")

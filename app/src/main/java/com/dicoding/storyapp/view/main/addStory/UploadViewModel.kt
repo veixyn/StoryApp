@@ -25,7 +25,13 @@ class UploadViewModel(private val repository: Repository) : ViewModel() {
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String> = _toast
 
-    suspend fun uploadImage(token: String, imageFile: File, description: String, lat: Double?, lon: Double?) {
+    suspend fun uploadImage(
+        token: String,
+        imageFile: File,
+        description: String,
+        lat: Double?,
+        lon: Double?,
+    ) {
         _isLoading.value = true
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())

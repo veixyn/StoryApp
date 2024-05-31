@@ -7,13 +7,13 @@
     tools:context=".view.main.storyDetail.StoryDetailActivity">
 
     <ImageView
-        android:contentDescription="@string/story_image"
         android:id="@+id/img_story_detail"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:contentDescription="@string/story_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,6 +61,7 @@
         android:background="@drawable/rounded_textview"
         android:gravity="center|start"
         android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="@string/name"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/tv_story_detail_title"

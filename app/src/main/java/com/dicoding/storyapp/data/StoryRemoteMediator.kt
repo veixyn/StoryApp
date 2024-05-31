@@ -13,7 +13,7 @@ import com.dicoding.storyapp.database.StoryDatabase
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
     private val database: StoryDatabase,
-    private val apiService: ApiService
+    private val apiService: ApiService,
 ) : RemoteMediator<Int, ListStoryItem>() {
     override suspend fun load(
         loadType: LoadType,
@@ -70,11 +70,13 @@ class StoryRemoteMediator(
             database.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
+
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, ListStoryItem>): RemoteKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
             database.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
+
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, ListStoryItem>): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->

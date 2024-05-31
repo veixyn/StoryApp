@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.dicoding.storyapp.data.api.ListStoryItem
-import com.dicoding.storyapp.data.api.ListStoryItemDao
 
 @Database(
     entities = [ListStoryItem::class, RemoteKeys::class],

@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.ActivityUploadBinding
 import com.dicoding.storyapp.getImageUri
 import com.dicoding.storyapp.reduceFileImage
@@ -87,7 +88,7 @@ class UploadActivity : AppCompatActivity() {
                     viewModel.uploadImage(token, imageFile, description, lat, lon)
                 }
             } ?: run {
-                showToast("Mohon masukkan gambar.")
+                showToast(R.string.empty_image_warning.toString())
             }
         }
     }
@@ -128,9 +129,11 @@ class UploadActivity : AppCompatActivity() {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     // Precise location access granted.
                 }
+
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     // Only approximate location access granted.
                 }
+
                 else -> {
                     // No location access granted.
                 }

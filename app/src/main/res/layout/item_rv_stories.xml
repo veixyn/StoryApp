@@ -21,6 +21,7 @@
             android:id="@+id/img_story"
             android:layout_width="0dp"
             android:layout_height="250dp"
+            android:importantForAccessibility="no"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"

@@ -6,12 +6,11 @@
             android:id="@+id/maps"
             android:icon="@drawable/baseline_add_location_24"
             android:title="@string/show_maps"
-            app:showAsAction="ifRoom"
-            />
+            app:showAsAction="ifRoom" />
         <item
             android:id="@+id/logout"
             android:icon="@drawable/baseline_assignment_return_24"
-            android:title="@string/menu_1"
+            android:title="@string/logout"
             app:showAsAction="ifRoom" />
     </group>
 </menu>

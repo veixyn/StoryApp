@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.storyapp.data.api.ListStoryItem
@@ -15,7 +14,7 @@ import com.dicoding.storyapp.view.main.storyDetail.StoryDetailActivity.Companion
 
 class StoryAdapter :
     PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
-    class MyViewHolder(val binding: ItemRvStoriesBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemRvStoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStoryItem) {
             Glide.with(binding.root)
                 .load(story.photoUrl)
@@ -62,7 +61,7 @@ class StoryAdapter :
         val data = getItem(position)
         if (data != null) {
             holder.bind(data)
-                holder.itemView.setOnClickListener {
+            holder.itemView.setOnClickListener {
                 val intentDetail = Intent(holder.itemView.context, StoryDetailActivity::class.java)
                 intentDetail.putExtra(EXTRA_STORY, data)
                 holder.itemView.context.startActivity(intentDetail)
@@ -71,7 +70,8 @@ class StoryAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ItemRvStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemRvStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 }

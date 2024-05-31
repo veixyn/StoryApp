@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.data.StoryPagingSource
 import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.view.ViewModelFactory
 import com.dicoding.storyapp.view.main.addStory.UploadActivity
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, MapsActivity::class.java))
                     true
                 }
+
                 R.id.logout -> {
                     AlertDialog.Builder(this@MainActivity).apply {
                         setTitle("Log out?")

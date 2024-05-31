@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.dicoding.storyapp.data.api.ListStoryItem
-import com.dicoding.storyapp.data.api.ListStoryItemDao
 
 @Dao
 interface StoryDao {
