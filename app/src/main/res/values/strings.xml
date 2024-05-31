@@ -29,4 +29,5 @@
     <string name="show_maps">Show Maps</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="share_your_location">Share your location?</string>
+    <string name="retry">Coba lagi</string>
 </resources>

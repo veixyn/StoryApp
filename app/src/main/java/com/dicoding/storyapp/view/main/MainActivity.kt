@@ -2,22 +2,19 @@ package com.dicoding.storyapp.view.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.storyapp.view.maps.MapsActivity
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.StoryPagingSource
-import com.dicoding.storyapp.data.api.ListStoryItem
 import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.view.ViewModelFactory
 import com.dicoding.storyapp.view.main.addStory.UploadActivity
+import com.dicoding.storyapp.view.maps.MapsActivity
 import com.dicoding.storyapp.view.welcome.WelcomeActivity
-import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -82,24 +79,28 @@ class MainActivity : AppCompatActivity() {
         binding.rvStories.addItemDecoration(itemDecoration)
     }
 
-    fun setStories() {
+    private fun setStories() {
         val adapter = StoryAdapter()
 
-        lifecycleScope.launch {
-            delay(1000)
-            adapter.refresh()
-        }
-
         with(binding) {
-            rvStories.adapter = adapter
+            rvStories.adapter = adapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
             refresh.setOnRefreshListener {
-                adapter.refresh()
-                refresh.isRefreshing = false
+                lifecycleScope.launch {
+                    adapter.refresh()
+                    delay(1000)
+                    rvStories.layoutManager?.scrollToPosition(0)
+                    refresh.isRefreshing = false
+                }
             }
         }
 
         viewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
+            binding.rvStories.scrollToPosition(0)
         }
     }
 }
