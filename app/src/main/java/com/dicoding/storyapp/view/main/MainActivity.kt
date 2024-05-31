@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
-            binding.rvStories.scrollToPosition(0)
         }
     }
 }

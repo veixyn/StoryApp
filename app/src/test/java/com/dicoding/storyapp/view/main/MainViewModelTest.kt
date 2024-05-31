@@ -37,11 +37,11 @@ class MainViewModelTest{
 
     @Test
     fun `when Get Story Should Not Null and Return Data`() = runTest {
-        val dummyQuote = DataDummy.generateDummyStoryResponse()
-        val data: PagingData<ListStoryItem> = StoryPagingSource.snapshot(dummyQuote)
-        val expectedQuote = MutableLiveData<PagingData<ListStoryItem>>()
-        expectedQuote.value = data
-        Mockito.`when`(storyRepository.getStory()).thenReturn(expectedQuote)
+        val dummyStory = DataDummy.generateDummyStoryResponse()
+        val data: PagingData<ListStoryItem> = StoryPagingSource.snapshot(dummyStory)
+        val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
+        expectedStory.value = data
+        Mockito.`when`(storyRepository.getStory()).thenReturn(expectedStory)
 
         val mainViewModel = MainViewModel(storyRepository)
         val actualStory: PagingData<ListStoryItem> = mainViewModel.story.getOrAwaitValue()
@@ -54,8 +54,8 @@ class MainViewModelTest{
         differ.submitData(actualStory)
 
         Assert.assertNotNull(differ.snapshot())
-        Assert.assertEquals(dummyQuote.size, differ.snapshot().size)
-        Assert.assertEquals(dummyQuote[0], differ.snapshot()[0])
+        Assert.assertEquals(dummyStory.size, differ.snapshot().size)
+        Assert.assertEquals(dummyStory[0], differ.snapshot()[0])
     }
 
     @Test
