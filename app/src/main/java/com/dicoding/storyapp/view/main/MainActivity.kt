@@ -23,11 +23,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: StoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        adapter = StoryAdapter()
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvStories.layoutManager = layoutManager
@@ -84,8 +87,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStories() {
-        val adapter = StoryAdapter()
-
         with(binding) {
             rvStories.adapter = adapter.withLoadStateFooter(
                 footer = LoadingStateAdapter {
@@ -103,7 +104,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.story.observe(this) {
-            adapter.submitData(lifecycle, it)
+            if (it != null) {
+                adapter.submitData(lifecycle, it)
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.refresh()
     }
 }
