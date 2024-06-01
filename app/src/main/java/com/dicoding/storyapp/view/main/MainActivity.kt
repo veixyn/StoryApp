@@ -29,6 +29,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvStories.layoutManager = layoutManager
+        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
+        binding.rvStories.addItemDecoration(itemDecoration)
+
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                val intent = Intent(this, WelcomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            } else {
+                lifecycleScope.launch {
+                    setStories()
+                    delay(1000)
+                    (binding.rvStories.layoutManager as LinearLayoutManager).smoothScrollToPosition(binding.rvStories, null, 0)
+                }
+            }
+        }
+
         binding.fabAdd.setOnClickListener {
             startActivity(Intent(this, UploadActivity::class.java))
         }
@@ -62,21 +81,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                val intent = Intent(this, WelcomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-            } else {
-                setStories()
-            }
-        }
-
-        val layoutManager = LinearLayoutManager(this)
-        binding.rvStories.layoutManager = layoutManager
-        val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        binding.rvStories.addItemDecoration(itemDecoration)
     }
 
     private fun setStories() {
